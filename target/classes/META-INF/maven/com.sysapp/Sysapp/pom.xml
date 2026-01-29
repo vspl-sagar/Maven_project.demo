@@ -1,0 +1,63 @@
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.sysapp</groupId>
+  <artifactId>Sysapp</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  
+  <!-- https://mvnrepository.com/artifact/com.intuit.karate/karate-apache -->
+<dependency>
+    <groupId>com.intuit.karate</groupId>
+    <artifactId>karate-apache</artifactId>
+    <version>0.9.5</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.intuit.karate/karate-core -->
+<dependency>
+    <groupId>com.intuit.karate</groupId>
+    <artifactId>karate-core</artifactId>
+    <version>1.4.0.RC3</version>
+</dependency>
+
+  <!-- https://mvnrepository.com/artifact/com.intuit.karate/karate-junit5 -->
+<dependency>
+    <groupId>com.intuit.karate</groupId>
+    <artifactId>karate-junit5</artifactId>
+    <version>1.4.0</version>
+    <scope>test</scope>
+</dependency>
+
+  <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.10.1</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.29.0</version>
+</dependency>
+
+  <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.29.0</version>
+</dependency>
+    <dependency>
+        <groupId>com.google.oauth-client</groupId>
+        <artifactId>google-oauth-client</artifactId>
+        <version>1.35.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.google.http-client</groupId>
+        <artifactId>google-http-client-gson</artifactId>
+        <version>1.35.0</version>
+    </dependency>
+  
+  </dependencies>
+  
+</project>
