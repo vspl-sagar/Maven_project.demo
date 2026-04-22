@@ -1,10 +1,8 @@
 package sysappTest;
-
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -18,37 +16,38 @@ public class CreateQuote {
 	public void quotecreate(WebDriver driver) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		// Open Quote tab
+// Open Quote tab
 		wait.until(ExpectedConditions.elementToBeClickable(By.id("quote_tab"))).click();
-		int totalVehicles = 5;
-		int quotesPerVehicle = 4;
-		// ===== OUTER LOOP : VEHICLES =====
+		int totalVehicles = 1;
+		int quotesPerVehicle = 1;
+// outer loop for Vehicle 
 		for (int v = 1; v <= totalVehicles; v++) {
 			System.out.println("Vehicle " + v + " quotations start");
-			// ===== INNER LOOP : QUOTATIONS =====
+// Inner loop for vehicle
 			for (int q = 1; q <= quotesPerVehicle; q++) {
 				System.out.println("  Creating quote " + q);
-				// Create quotation
+// Create quotation
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("create_edit_prop")));
 				wait.until(ExpectedConditions.elementToBeClickable(By.id("create_edit_prop"))).click();
 				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("doc_date")));
-				// Open drop down
+// Open drop down
 				WebElement vehicleDropdown = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h5[normalize-space()='Select Vehicle']/following::span[contains(@class,'select2-selection')][1]")));
 				vehicleDropdown.click();
 				// Wait for select2 options
 				WebElement resultsContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='select2-results__options']")));
-				// Get all enabled options
+// Get all enabled options
 				List<WebElement> vehicleOptions = resultsContainer.findElements(By.xpath(".//li[contains(@class,'select2-results__option') and not(contains(@class,'select2-results__option--disabled'))]"));
 				// Skip index 0 ("Select a vehicle")
 				// v = 1 → index 1 (2nd option)
 				// v = 5 → index 5 (6th option)
 				vehicleOptions.get(v).click();
-				// Select Product BC
+// Select Product BC
 				WebElement dropdownpt = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='BC']")));
 				js.executeScript("arguments[0].scrollIntoView(true);", dropdownpt);
 				dropdownpt.click();
 				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@role='searchbox']"))).sendKeys("BC");
 				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[text()='BC']"))).click();
-				// Select Coverage
+// Select Coverage
 				WebElement coverage = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//select[@class='form-select form-select-sm'])[1]")));
 				Select select = new Select(coverage);
 				select.selectByValue("ALL");
@@ -57,7 +56,7 @@ public class CreateQuote {
 				js.executeScript("arguments[0].scrollIntoView(true);", prodopt);
 				driver.findElement(By.xpath("(//input[@type='checkbox'])[3]")).click();
 
-				// ---------- RANDOM ADDONS ----------
+//  Select Random Addons
 				List<WebElement> addonCards = driver.findElements(By.xpath("//div[contains(@class,'card')]//h3[text()='Product Addons']/ancestor::div[contains(@class,'card')]"));
 
 				Random random = new Random();
@@ -72,27 +71,28 @@ public class CreateQuote {
 							}
 						}}}
 				
-				// Pricing
+ // Enter discount 
 				WebElement disc = driver.findElement(By.id("ai.nx_info.adjust_amt"));
 				disc.clear();
 				disc.sendKeys("10");
-
+ // Enter down payment month
 				WebElement month = driver.findElement(By.id("ai.nx_info.fin_info.month"));
 				month.clear();
 				month.sendKeys("6");
-
+ // Enter down payment ass 1$
 				WebElement downpay = driver.findElement(By.id("ai.nx_info.down_payment.downp_amt"));
 				downpay.clear();
 				downpay.sendKeys("1");
 
-				// Save & Close
+// Save & Close
 				driver.findElement(By.id("btnSave")).click();
 				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btnActions")));
 				wait.until(ExpectedConditions.elementToBeClickable(By.id("btnClose"))).click();
 
-				// Wait for next quote button
-				wait.until(ExpectedConditions.elementToBeClickable(By.id("create_edit_prop")));
+
+				
 			}
-		}
+					
+			}
 	}
 }

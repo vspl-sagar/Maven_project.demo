@@ -1,8 +1,8 @@
 package sysappTest;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Addlead {
 
 	public String addLead(WebDriver driver) throws InterruptedException {
-        // Click Sales menu
+ // Click Sales menu & Add Lead
         driver.findElement(By.xpath("//a[@href='#nv-mnuSales']")).click();
         driver.findElement(By.xpath("//span[text()='Add Lead']")).click();
 
@@ -21,13 +21,14 @@ public class Addlead {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("bo-form-body-cont")));
+ // Enter First name
+        driver.findElement(By.id("ai.cust_info.first_name")).sendKeys("Test");
+ // Enter Last name
+        driver.findElement(By.id("ai.cust_info.last_name")).sendKeys("User");
 
-        driver.findElement(By.id("ai.cust_info.first_name")).sendKeys("Test" + dt);
-
-        driver.findElement(By.id("ai.cust_info.last_name")).sendKeys("User" + dt);
-
-        // Click Save
+ // Click Save
         driver.findElement(By.id("btnSave")).click();
+ //Wait for edit button visibility
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btnEdit")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='col-xl-4']")));
         WebElement leadRefElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ai.lead_ref_id")));

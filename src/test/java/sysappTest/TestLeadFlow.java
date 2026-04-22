@@ -26,16 +26,16 @@ public class TestLeadFlow {
     @Test(priority = 2, dependsOnMethods = "addLeadTest")
     public void searchLeadTest() {
         Leadsearch leadSearch = new Leadsearch();
-        leadSearch.search(driver,leadRefId);
+        leadSearch.search(driver,leadRefId);	
     }
 
     @Test(priority = 3, dependsOnMethods = "searchLeadTest")
-    public void editLeadTest() {
+    public void editLeadTest() throws InterruptedException {
         LeadEdit editLead = new LeadEdit();
         editLead.editLeadmthd(driver,leadRefId);
     }
         
-        
+       
         @Test(priority = 4, dependsOnMethods = "editLeadTest")
         public void advehicle() {	
         	AddVehicle vehicle=new AddVehicle();
@@ -47,5 +47,14 @@ public class TestLeadFlow {
         	CreateQuote vehicle=new CreateQuote();
         	vehicle.quotecreate(driver);
     }
-}
+        @Test(priority = 6)
+       public void chstatus() throws InterruptedException {
+    	   ChangeStatus chst = new ChangeStatus();
+    	   chst.statusschange(driver);
+       }
+    	   
+    	   
+   	}
+
+
 
