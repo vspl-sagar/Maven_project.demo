@@ -15,7 +15,9 @@ public class AddVehicle {
     public void addleadvehicle(WebDriver driver) {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+       
         JavascriptExecutor js = (JavascriptExecutor) driver;
+   
  // List of VIN numbers
         List<String> vinNumbers = Arrays.asList(
                 "JN1AZ4EH2GM936868"
@@ -61,16 +63,29 @@ public class AddVehicle {
             vehissueqtn.click();
 
             driver.findElement(By.id("ai.pq_info.com_purp")).sendKeys("Not used yet");
+           
+            
+            
+         // Save vehicle
+            wait.until(ExpectedConditions.elementToBeClickable(By.id("btnSave"))).click();
 
- // Save vehicle
-            driver.findElement(By.id("btnSave")).click();
+            // Wait for toast
+            wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".iziToast-opened")
+            ));
 
- // Wait and close
+            
+            // Click Create Quote
+            By createQuote = By.xpath(
+                "//div[contains(@class,'iziToast-opened')]//button[.//b[normalize-space()='Create Quote']]"
+            );
+
+            wait.until(ExpectedConditions.elementToBeClickable(createQuote)).click();
+
+            // Wait for quote screen
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btnEdit")));
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("btnClose"))).click();
 
-            // Small wait before next VIN
-            wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[normalize-space()='Add Vehicle']")));
+          
         }
     }
 }

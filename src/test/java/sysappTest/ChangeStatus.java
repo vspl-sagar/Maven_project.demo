@@ -1,9 +1,11 @@
 package sysappTest;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,28 +19,48 @@ public class ChangeStatus {
 	public void statusschange(WebDriver driver) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		wait.until(ExpectedConditions.elementToBeClickable(By.id("quote_tab"))).click();
+		
 //Click on Edit Quote pencil icon
 		
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='pr-2']//a[@href='#']//*[name()='svg']"))).click();
+		 WebElement firstQuotation = driver.findElement(By.xpath("(//input[contains(@class,'sel-lead')])[1]"));
+
+		        // Select the first quotation
+		        if (!firstQuotation.isSelected()) {
+		            firstQuotation.click();
+		        }
+		        
+		      
+
+// Find the edit button belonging to the same quotation row
+		WebElement editButton = firstQuotation.findElement(By.xpath("./ancestor::tr[1]//a[1]"));
+// Click Edit
+		editButton.click();
 		Thread.sleep(5000);
+		 //wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btnActions")));
+		 
 //Click on Action Button
-		
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id='btnActions']"))).click();
-//Click on Approved Button
-		
-		
-		WebElement approved = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnActSend")));
+		WebElement actions = driver.findElement(By.xpath("//div[@class='d-flex justify-content-between']//div[@role='group']//button[@id='btnActions']"));
 
-		Actions actions = new Actions(driver);
+		By actionsBtn = By.id("btnActions");
 
-		actions.moveToElement(approved).click().perform();
-		Thread.sleep(3000);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id='btnActions']"))).click();
-		Thread.sleep(3000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.id("btnClose"))).click();
-		Thread.sleep(2000);
+		wait.until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(actionsBtn))).click();
+
+		//actions.click();
+		WebElement approved = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[normalize-space()='Approved']")));
+
+		approved.click();
+		Thread.sleep(5000);
+
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='btnClose']"))).click();
+			
 		
 		
+		
+		
+
+
+	
 		
 //Click on Bank Tab 
         WebElement bankTab = wait.until(ExpectedConditions.elementToBeClickable(By.id("bank_tab")));
@@ -74,8 +96,8 @@ public class ChangeStatus {
     	wait.until(ExpectedConditions.elementToBeClickable(By.id("quote_tab"))).click();
 //Select Approved Quote
     	wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@class='sel-lead' and @data-stage='approved']"))).click();
-    	WebElement actionsBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnActions")));
-    	actionsBtn.click();
+    	WebElement actionsBtn1 = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnActions")));
+    	actionsBtn1.click();
 //Click Request down payment 
     	WebElement requestDP = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[normalize-space()='Request Down Payment']")));
 
@@ -89,15 +111,15 @@ public class ChangeStatus {
     	yesBtn.click();
     	//Thread.sleep(5000);
     	wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".loading, .spinner, .overlay, .loader")));
-    	
+  /*  	
  //Select checkbox
     	WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='checkbox' and contains(@data-prop-id,'PROP')]")));
     	checkbox.click();
     	
  //Click on Action and change status as Create contract 
     
-    	WebElement actionsBtn1 = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnActions")));
-    	actionsBtn1.click();
+    	WebElement actionsBtn2 = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnActions")));
+    	actionsBtn2.click();
 
 // Select Create Contract
     	WebElement createContract = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[normalize-space()='Create Contract']")));
@@ -125,5 +147,7 @@ public class ChangeStatus {
     	Enrolled.click();
     	wait.until(ExpectedConditions.elementToBeClickable(By.id("btnYes"))).click();
     	wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".loading, .spinner, .overlay, .loader")));
+    */	
+    	
 }	
 }

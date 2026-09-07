@@ -31,14 +31,14 @@ public class LeadEdit {
  //Enter Lead ref id in search field
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@id='cf_plead_ref_id']"))).sendKeys(leadRefId);
         driver.findElement(By.xpath("//button[@id='btnRefresh']")).click();
-        driver.findElement(By.xpath("//a[@title='Open in current window']//*[name()='svg']")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@title='Open in current window'])[1]"))).click();
  //Click on edit        
         WebElement editleadit=wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='edit_lead']")));
         editleadit.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Lead Information']")));
         wait.until(ExpectedConditions.elementToBeClickable(By.id("btnEdit"))).click();
  //Double click on Birth date field 
-        WebElement BOD=driver.findElement(By.xpath("(//*[name()='svg'][@class='svg-inline--fa fa-eye'])[1]"));
+        WebElement BOD = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[name()='svg'][@class='svg-inline--fa fa-eye'])[1]")));
         Actions actions=new Actions(driver);
         actions.doubleClick(BOD).perform();
  //Enter Date of Birth
@@ -65,15 +65,23 @@ public class LeadEdit {
         String Emailname="Test"+dt+"@gmail.com";
         driver.findElement(By.xpath("//input[@id='ai.cust_info.email']")).sendKeys(Emailname );
  //Enter Address       
-        driver.findElement(By.xpath("//input[@id='ai.cust_info.addr_info.street']")).sendKeys("Sai Palace");
-        driver.findElement(By.xpath("//input[@id='ai.cust_info.addr_info.zip']")).sendKeys("23421");
-        driver.findElement(By.xpath("//input[@id='ai.cust_info.addr_info.city']")).sendKeys("Satara");
+        driver.findElement(By.xpath("//input[@id='ai.cust_info.addr_info.street']")).sendKeys("4672 Hanover Street");
+        driver.findElement(By.xpath("//input[@id='ai.cust_info.addr_info.zip']")).sendKeys("39601");
+        driver.findElement(By.xpath("//input[@id='ai.cust_info.addr_info.city']")).sendKeys("Garden City");
         driver.findElement(By.xpath("//h5[text()='State']/following::span[contains(@class,'select2-selection--single')][1]")).click();
         driver.findElement(By.xpath("(//input[@role='searchbox'])[1]")).sendKeys("New York");
         driver.findElement(By.xpath("//li[@role='option' and text()='New York']")).click();
        // driver.findElement(By.xpath("//input[@id='ai.cust_info.ph_addr_info.same_as_mailing_addr']")).click();
  //Click on save
-        driver.findElement(By.xpath("//button[@id='btnSave']")).click();
+     // Click Save
+        WebElement saveButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnSave")));
+        saveButton.click();
+
+        // Wait until Save button is no longer visible
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("btnSave")));
+
+        // Wait until Edit button becomes visible
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btnEdit")));
 
 
     }

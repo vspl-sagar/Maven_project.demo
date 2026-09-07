@@ -1,8 +1,8 @@
 # Maven / Java
-
+target/
 
 # TestNG reports
-
+test-output/
 
 # Eclipse files
 .project

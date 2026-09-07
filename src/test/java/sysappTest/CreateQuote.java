@@ -15,84 +15,69 @@ public class CreateQuote {
 
 	public void quotecreate(WebDriver driver) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-// Open Quote tab
-		wait.until(ExpectedConditions.elementToBeClickable(By.id("quote_tab"))).click();
-		int totalVehicles = 1;
-		int quotesPerVehicle = 1;
-// outer loop for Vehicle 
-		for (int v = 1; v <= totalVehicles; v++) {
-			System.out.println("Vehicle " + v + " quotations start");
-// Inner loop for vehicle
-			for (int q = 1; q <= quotesPerVehicle; q++) {
-				System.out.println("  Creating quote " + q);
-// Create quotation
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("create_edit_prop")));
-				wait.until(ExpectedConditions.elementToBeClickable(By.id("create_edit_prop"))).click();
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("doc_date")));
-// Open drop down
-				WebElement vehicleDropdown = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h5[normalize-space()='Select Vehicle']/following::span[contains(@class,'select2-selection')][1]")));
-				vehicleDropdown.click();
-				// Wait for select2 options
-				WebElement resultsContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='select2-results__options']")));
-// Get all enabled options
-				List<WebElement> vehicleOptions = resultsContainer.findElements(By.xpath(".//li[contains(@class,'select2-results__option') and not(contains(@class,'select2-results__option--disabled'))]"));
-				// Skip index 0 ("Select a vehicle")
-				// v = 1 → index 1 (2nd option)
-				// v = 5 → index 5 (6th option)
-				vehicleOptions.get(v).click();
-// Select Product BC
-				WebElement dropdownpt = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='BC']")));
-				js.executeScript("arguments[0].scrollIntoView(true);", dropdownpt);
-				dropdownpt.click();
-				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@role='searchbox']"))).sendKeys("BC");
-				wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[text()='BC']"))).click();
-// Select Coverage
-				WebElement coverage = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//select[@class='form-select form-select-sm'])[1]")));
-				Select select = new Select(coverage);
-				select.selectByValue("ALL");
-// Select Product
-				WebElement prodopt = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//input[@type='checkbox'])[3]")));
-				js.executeScript("arguments[0].scrollIntoView(true);", prodopt);
-				driver.findElement(By.xpath("(//input[@type='checkbox'])[3]")).click();
+	
+		
+		WebElement selectElement = driver.findElement(By.cssSelector("select.form-select.form-select-sm"));
 
-//  Select Random Addons
-				List<WebElement> addonCards = driver.findElements(By.xpath("//div[contains(@class,'card')]//h3[text()='Product Addons']/ancestor::div[contains(@class,'card')]"));
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",selectElement);
+		
+		Select select = new Select(selectElement);
+		select.selectByVisibleText("ALL");
+		
+		
+		WebElement termDropdown = driver.findElement(By.xpath("//span[normalize-space()='Term']/following-sibling::select"));
 
-				Random random = new Random();
-				for (WebElement card : addonCards) {
-					List<WebElement> addons = card.findElements(By.xpath(".//input[@type='checkbox' and not(@disabled)]"));
-					if (!addons.isEmpty()) {
-						Collections.shuffle(addons);
-						int count = random.nextInt(addons.size()) + 1;
-						for (int i = 0; i < count; i++) {
-							if (!addons.get(i).isSelected()) {
-								js.executeScript("arguments[0].click();", addons.get(i));
-							}
-						}}}
-				
- // Enter discount 
-				WebElement disc = driver.findElement(By.id("ai.nx_info.adjust_amt"));
-				disc.clear();
-				disc.sendKeys("10");
- // Enter down payment month
-				WebElement month = driver.findElement(By.id("ai.nx_info.fin_info.month"));
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",termDropdown);
+
+			termDropdown.click();
+
+			Select term = new Select(termDropdown);
+			term.selectByVisibleText("ALL");
+		
+		
+			WebElement productAddons = driver.findElement(By.xpath("//h3[normalize-space()='Product Addons']"));
+
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",productAddons);
+		
+			// Find all product addon checkboxes
+			
+			List<WebElement> addons = driver.findElements(By.xpath("//h3[normalize-space()='Product Addons']/ancestor::div[@class='row'][1]//input[@type='checkbox']"));
+			// Shuffle the list randomly
+			Collections.shuffle(addons);
+
+			// Select 3 random addons
+			int numberToSelect = 3;
+
+			for (int i = 0; i < numberToSelect && i < addons.size(); i++) {
+			    WebElement addon = addons.get(i);
+
+			    if (!addon.isSelected()) {
+			        ((JavascriptExecutor) driver).executeScript("arguments[0].click();",addon);
+			    }
+			}
+	
+		//Enter month
+			WebElement month = wait.until(ExpectedConditions.elementToBeClickable(By.id("ai.nx_info.fin_info.month")));
 				month.clear();
-				month.sendKeys("6");
- // Enter down payment ass 1$
-				WebElement downpay = driver.findElement(By.id("ai.nx_info.down_payment.downp_amt"));
-				downpay.clear();
-				downpay.sendKeys("1");
-
-// Save & Close
-				driver.findElement(By.id("btnSave")).click();
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btnActions")));
-				wait.until(ExpectedConditions.elementToBeClickable(By.id("btnClose"))).click();
-
-
+				month.sendKeys("1");
+		
+		//Enter amount field value
+			WebElement amount = wait.until(ExpectedConditions.elementToBeClickable(By.id("ai.nx_info.down_payment.downp_amt")));
+				amount.clear();
+				amount.sendKeys("100");
+		//Click on Save 
+		    WebElement saveButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnSave")));
+				saveButton.click();
+		
+				// Wait until Cancel button becomes invisible
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("btnActions")));
+		
+			WebElement closeButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("btnClose")));
+			closeButton.click();
 				
-			}
-					
-			}
-	}
-}
+		
+		
+		
+	
+	}}
+
